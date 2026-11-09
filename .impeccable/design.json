@@ -1,0 +1,21 @@
+{
+  "platform": "macos",
+  "mode": "operate",
+  "source": "DESIGN.md",
+  "direction": "native-macos-utility",
+  "tokens": {
+    "sidebarWidth": 200,
+    "inspectorWidth": 310,
+    "minimumWindow": [1060, 660],
+    "defaultWindow": [1220, 760],
+    "fontFamily": "system",
+    "bodySize": 13,
+    "captionSize": 12,
+    "titleSize": 22,
+    "spacing": [6, 8, 12, 16, 20, 24, 36],
+    "accent": "systemAccent",
+    "background": "controlBackgroundColor",
+    "inspectorBackground": "windowBackgroundColor",
+    "states": {"running": "systemGreen", "starting": "systemOrange", "failed": "systemRed", "stopped": "secondaryLabelColor"}
+  }
+}

@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Show toolchain versions
+        run: |
+          xcodebuild -version
+          xcrun swift --version
+
+      - name: Run core tests
+        run: xcrun swift test
+
+      - name: Build Xcode project
+        run: |
+          xcodebuild build \
+            -project PortWeaver.xcodeproj \
+            -scheme PortWeaver \
+            -configuration Release \
+            -destination "platform=macOS" \
+            -derivedDataPath build/CI \
+            CODE_SIGNING_ALLOWED=NO
