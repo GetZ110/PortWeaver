@@ -4,7 +4,18 @@ import AppKit
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     var store: AppStore?
+    var reopenMainWindow: (() -> Void)?
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if let window = sender.windows.first(where: { $0.identifier?.rawValue == "main" }) {
+            if window.isMiniaturized { window.deminiaturize(nil) }
+            window.makeKeyAndOrderFront(nil)
+        } else {
+            reopenMainWindow?()
+        }
+        sender.activate(ignoringOtherApps: true)
+        return false
+    }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         guard let store, store.activeCount > 0 else { store?.shutdown(); return .terminateNow }
         let alert = NSAlert()
@@ -24,9 +35,8 @@ struct PortWeaverApp: App {
     @Environment(\.openWindow) private var openWindow
     var body: some Scene {
         Window("PortWeaver", id: "main") {
-            ContentView().environmentObject(store)
+            MainWindowRoot(store: store, delegate: delegate)
                 .frame(minWidth: 1060, minHeight: 660)
-                .task { delegate.store = store; store.initialize() }
         }
         .defaultSize(width: 1220, height: 760)
         .windowToolbarStyle(.unifiedCompact)
@@ -52,6 +62,21 @@ struct PortWeaverApp: App {
         MenuBarExtra("PortWeaver", systemImage: "arrow.left.arrow.right") {
             StatusMenu().environmentObject(store)
         }.menuBarExtraStyle(.window)
+    }
+}
+
+private struct MainWindowRoot: View {
+    @ObservedObject var store: AppStore
+    let delegate: AppDelegate
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some View {
+        ContentView().environmentObject(store)
+            .onAppear {
+                delegate.store = store
+                delegate.reopenMainWindow = { openWindow(id: "main") }
+                store.initialize()
+            }
     }
 }
 
