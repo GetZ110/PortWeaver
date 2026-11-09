@@ -2,7 +2,22 @@
 
 原生 macOS TCP / UDP 端口转发规则管理器。SwiftUI 界面，使用 Network.framework 转发，无第三方运行依赖。
 
+[![CI](https://github.com/GetZ110/PortWeaver/actions/workflows/ci.yml/badge.svg)](https://github.com/GetZ110/PortWeaver/actions/workflows/ci.yml)
+![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)
+![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange?logo=swift)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 ![PortWeaver rules window](docs/screenshot.png)
+
+## 下载与安装
+
+系统要求：macOS 14 或更高。通用版本支持 Apple Silicon 和 Intel Mac。
+
+1. 从 [GitHub Releases](https://github.com/GetZ110/PortWeaver/releases/latest) 下载最新的 `PortWeaver-1.0.0-universal.dmg`。
+2. 打开 DMG，将 `PortWeaver.app` 拖入“应用程序”。
+3. 从“应用程序”启动 PortWeaver，点击 `+` 创建第一条转发规则。
+
+当前发布包使用 ad-hoc 临时签名，尚未使用 Developer ID 签名和 Apple 公证。跨设备分发时，macOS 可能要求前往“系统设置 → 隐私与安全性”允许打开。正式公开分发应使用有效的 Developer ID 签名、公证并装订公证票据；本工程不包含开发者证书。
 
 ## 功能
 
@@ -18,12 +33,6 @@
 - 支持系统明暗模式、原生表格、检查器、快捷键与辅助功能标签。
 
 首次启动为空列表，不创建活动监听。“配置 → 添加示例规则”仅添加未启动的示例。`--preview` 仅供界面检查，不持久化，不监听。
-
-## 安装
-
-打开 `build/PortWeaver-1.0.0-universal.dmg`，将应用拖入 Applications 后运行。系统要求 macOS 14+；通用二进制支持 Apple Silicon 与 Intel。
-
-此构建使用 ad-hoc 临时签名，尚未进行 Developer ID 签名和 Apple 公证。跨设备分发可能触发系统拦截。正式分发需自行使用有效 Developer ID 签名、公证并装订公证票据；本工程未包含开发者证书。
 
 ## 开发与构建
 

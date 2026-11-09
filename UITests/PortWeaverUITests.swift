@@ -31,6 +31,15 @@ final class PortWeaverUITests: XCTestCase {
         add(attachment)
     }
 
+    func testCaptureDocumentationScreenshot() {
+        let window = app.windows["main"]
+        XCTAssertTrue(window.waitForExistence(timeout: 10))
+        let attachment = XCTAttachment(screenshot: window.screenshot())
+        attachment.name = "documentation-main-window"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testWindowAndSettingsReuseSingleMainWindow() {
         for _ in 0..<3 {
             showStatusPanel()
